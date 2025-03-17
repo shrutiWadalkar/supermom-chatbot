@@ -14,9 +14,10 @@ if not HF_API_KEY:
 MODEL_NAME = "HuggingFaceH4/zephyr-7b-beta"
 
 def clean_response(response):
-    """Remove system tokens like [INST] and [/INST] from the chatbot's response"""
-    response = re.sub(r'\[INST\]|\[/INST\]', '', response)  # Remove [INST] and [/INST]
-    return response.strip()  # Remove any extra spaces or newlines
+    """Clean AI response by removing system tokens like [INST] and [/INST]"""
+    response = re.sub(r'\[INST\]|\[/INST\]', '', response)  # Remove system tokens
+    return response.strip()  # Ensure clean output
+
 
 # Function to call Hugging Face API
 def ask_supermom(question):
