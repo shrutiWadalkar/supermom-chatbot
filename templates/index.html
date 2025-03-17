@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperMom AI Chatbot</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        input, button { font-size: 18px; padding: 10px; margin: 10px; }
+        #response { margin-top: 20px; font-size: 20px; }
+    </style>
+</head>
+<body>
+    <h1>SuperMom AI Chatbot</h1>
+    <input type="text" id="question" placeholder="Ask SuperMom AI anything..." />
+    <button onclick="askSuperMom()">Ask</button>
+    <div id="response"></div>
+    git status
+
+    <script>
+        async function askSuperMom() {
+            let question = document.getElementById("question").value;
+            let responseDiv = document.getElementById("response");
+            responseDiv.innerHTML = "Thinking...";
+
+            let response = await fetch("/ask", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ question })
+            });
+
+            let data = await response.json();
+            responseDiv.innerHTML = data.response || "Error!";
+        }
+    </script>
+</body>
+</html>
