@@ -12,10 +12,20 @@ if not HF_API_KEY:
 # Hugging Face Model Details
 MODEL_NAME = "HuggingFaceH4/zephyr-7b-beta"
 
-SYSTEM_MESSAGE = """You are SuperMom Guide, an AI parenting assistant.
-Your goal is to provide clear, practical, and step-by-step parenting advice.
-You will give only **real-world parenting solutions** with no fiction.
-"""
+import re
+
+def clean_response(response):
+    """Remove system tokens like [INST] and [/INST] from the chatbot's response"""
+    response = re.sub(r'\[INST\]|\[/INST\]', '', response)  # Remove [INST] and [/INST]
+    return response.strip()  # Remove any extra spaces or newlines
+
+@app.route("/ask", methods=["POST"])
+def ask():
+    user_input = request.json.get("message")
+    bot_response = generate_response(user_input)  # Call your function to get AI's response
+    clean_bot_response = clean_response(bot_response)  # Clean up response
+    return jsonify({"response": clean_bot_response})
+
 
 # Function to call Hugging Face API
 def ask_supermom(question):
