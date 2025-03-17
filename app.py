@@ -13,10 +13,13 @@ if not HF_API_KEY:
 # Hugging Face Model Details
 MODEL_NAME = "HuggingFaceH4/zephyr-7b-beta"
 
+import re
+
 def clean_response(response):
-    """Clean AI response by removing system tokens like [INST] and [/INST]"""
-    response = re.sub(r'\[INST\]|\[/INST\]', '', response)  # Remove system tokens
-    return response.strip()  # Ensure clean output
+    """Remove system tokens like [INST], [/INST], and <s> from the chatbot's response"""
+    response = re.sub(r'<s>\s*|\[INST\]|\[/INST\]>', '', response)  # Remove <s>, [INST], [/INST]
+    response = response.lstrip("> ")  # Remove any leading '>' or spaces
+    return response.strip()  # Remove extra spaces or newlines
 
 
 # Function to call Hugging Face API
